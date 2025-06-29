@@ -1,0 +1,41 @@
+name: Update Ocron Formula
+
+on:
+  repository_dispatch:
+    types: [update-ocron-formula]
+
+permissions:
+  contents: write
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Homebrew Tap repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get payload data
+        run: |
+          echo "Version: ${{ github.event.client_payload.version }}"
+          echo "SHA256: ${{ github.event.client_payload.sha256 }}"
+          echo "Release Tag: ${{ github.event.client_payload.release_tag }}"
+
+      # TODO: ensure these sed commands are correct
+      - name: Update ocron formula file
+        run: |
+          cd Formula
+          sed -i "s|url \".*\"|url \"https://github.com/Brendon-Hablutzel/ocron/releases/download/${{ github.event.client_payload.release_tag }}/ocron.tar.gz\"|g" ocron.rb
+          sed -i "s|sha256 \".*\"|sha256 \"${{ github.event.client_payload.sha256 }}\"|g" ocron.rb
+          sed -i "s|version \".*\"|version \"${{ github.event.client_payload.version }}\"|g" ocron.rb
+        shell: bash
+
+      - name: Commit and push ocron formula update
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add Formula/ocron.rb
+          git commit -m "Update ocron formula to ${{ github.event.client_payload.release_tag }}"
+          git push
