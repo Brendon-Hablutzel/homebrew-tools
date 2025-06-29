@@ -2,7 +2,7 @@ class Ocron < Formula
   desc "ocron CLI and daemon"
   homepage "https://github.com/Brendon-Hablutzel/ocron"
   url "https://github.com/Brendon-Hablutzel/ocron/releases/download/v0.0.1/ocron.tar.gz"
-  sha256 "f4f3e51d8265766cb57141a93895cd1d4143a42a3687a10292ba94c672e8b2cc"
+  sha256 "81276a24f4557febe262983aec88106362f786395b220cab6b35308f20c0a677"
   version "0.0.1"
 
   def install
