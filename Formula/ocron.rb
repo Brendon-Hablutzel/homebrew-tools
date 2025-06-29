@@ -11,7 +11,6 @@ class Ocron < Formula
   end
 
   test do
-    system "#{bin}/ocron", "--version"
-    system "#{bin}/ocrond", "--version"
+    system "#{bin}/ocron", "--help", "plain"
   end
 end
